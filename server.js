@@ -421,7 +421,8 @@ wss.on("connection", (ws) => {
 
   sendToSocket(ws, {
     type: "public_buffer",
-    messages: publicBuffer.map(m => serializeMessage(m, meta.userId))
+    // only send the most recent five messages to newly connected users
+    messages: publicBuffer.slice(-5).map(m => serializeMessage(m, meta.userId))
   });
 
   broadcastPublicPresence();

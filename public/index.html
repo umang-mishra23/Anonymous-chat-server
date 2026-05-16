@@ -1357,7 +1357,7 @@ function updatePublicUsers(users) {
     // GIF picker via GIPHY
     let gifDebounce = null;
     let gifCategory = 'gifs';
-    const GIPHY_KEY = 'PWaRg14msTq8rJjP5kx6Ny310Bhkk0Lh';
+    const GIPHY_KEY = process.env.API_KEY;
     const GIPHY_BASE = 'https://api.giphy.com/v1';
 
     function openGifPanel() {
