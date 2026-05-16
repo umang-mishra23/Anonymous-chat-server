@@ -1357,10 +1357,21 @@ function updatePublicUsers(users) {
     // GIF picker via GIPHY
     let gifDebounce = null;
     let gifCategory = 'gifs';
-    const GIPHY_KEY = process.env.API_KEY;
+    const GIPHY_KEY = typeof process !== 'undefined' && process?.env?.API_KEY ? process.env.API_KEY : null;
     const GIPHY_BASE = 'https://api.giphy.com/v1';
 
+    function isGifEnabled() {
+      if (!GIPHY_KEY) {
+        if (els?.gifGrid) {
+          els.gifGrid.innerHTML = '<div class="gif-loading">GIF search is unavailable</div>';
+        }
+        return false;
+      }
+      return true;
+    }
+
     function openGifPanel() {
+      if (!isGifEnabled()) return;
       els.gifPanel.classList.toggle('open');
       if (els.gifPanel.classList.contains('open')) {
         els.gifSearch.focus();
