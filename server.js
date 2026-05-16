@@ -3,8 +3,26 @@ import http from "http";
 import express from "express";
 import { WebSocketServer, WebSocket } from "ws";
 import crypto from "crypto";
+import fs from "fs";
+import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
+const indexPath = path.join(process.cwd(), "public", "index.html");
+const indexHtml = fs.readFileSync(indexPath, "utf8");
+
+const injectApiKey = (html) => {
+  const key = process.env.GIPHY_API_KEY || process.env.API_KEY || "";
+  const script = `<script>window.GIPHY_API_KEY = ${JSON.stringify(key)};</script>`;
+  return html.replace("<!-- GIPHY_KEY_INJECTION -->", script);
+};
+
+app.get(["/", "/index.html"], (req, res) => {
+  res.type("html").send(injectApiKey(indexHtml));
+});
+
 app.use(express.static("public"));
 
 const server = http.createServer(app);

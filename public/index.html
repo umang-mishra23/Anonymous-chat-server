@@ -690,6 +690,7 @@
   </style>
 </head>
 <body>
+  <!-- GIPHY_KEY_INJECTION -->
   <div class="users-modal-backdrop" id="usersModalBackdrop">
     <div class="users-modal">
       <h3>🟢 Online Users <button class="modal-close" id="closeUsersModal">✕ Close</button></h3>
@@ -1357,13 +1358,13 @@ function updatePublicUsers(users) {
     // GIF picker via GIPHY
     let gifDebounce = null;
     let gifCategory = 'gifs';
-    const GIPHY_KEY = typeof process !== 'undefined' && process?.env?.API_KEY ? process.env.API_KEY : null;
+    const GIPHY_KEY = window.GIPHY_API_KEY || (typeof process !== 'undefined' && process?.env?.API_KEY ? process.env.API_KEY : null);
     const GIPHY_BASE = 'https://api.giphy.com/v1';
 
     function isGifEnabled() {
       if (!GIPHY_KEY) {
         if (els?.gifGrid) {
-          els.gifGrid.innerHTML = '<div class="gif-loading">GIF search is unavailable</div>';
+          els.gifGrid.innerHTML = '<div class="gif-loading">GIF search is unavailable. Add a GIPHY API key to enable GIFs and stickers.</div>';
         }
         return false;
       }
@@ -1371,12 +1372,11 @@ function updatePublicUsers(users) {
     }
 
     function openGifPanel() {
-      if (!isGifEnabled()) return;
       els.gifPanel.classList.toggle('open');
-      if (els.gifPanel.classList.contains('open')) {
-        els.gifSearch.focus();
-        if (!els.gifSearch.value) loadTrendingGifs();
-      }
+      if (!els.gifPanel.classList.contains('open')) return;
+      if (!isGifEnabled()) return;
+      els.gifSearch.focus();
+      if (!els.gifSearch.value) loadTrendingGifs();
     }
 
     async function loadTrendingGifs() {

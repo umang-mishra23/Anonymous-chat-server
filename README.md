@@ -8,6 +8,8 @@ node server.js
 
 Open `http://localhost:3000`.
 
+> GIF and sticker search requires a GIPHY API key in `GIPHY_API_KEY` (or `API_KEY`) before starting the server.
+
 ## Included
 - Public and private tabs
 - Anonymous profiles with avatar + temporary display name
