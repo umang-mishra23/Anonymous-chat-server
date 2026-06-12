@@ -5,10 +5,12 @@ import { WebSocketServer, WebSocket } from "ws";
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 
 dotenv.config();
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 const publicDirCandidates = [
