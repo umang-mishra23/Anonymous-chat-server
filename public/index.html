@@ -890,8 +890,12 @@
 
   <script src="/config.js"></script>
   <script>
-    const wsUrl = window.CHAT_SERVER_URL || (location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + location.host;
-    const ws = new WebSocket(wsUrl);
+    <!-- const wsUrl =
+  window.CHAT_SERVER_URL ||
+  "wss://ghostlobby.onrender.com";
+
+const ws = new WebSocket(wsUrl); -->
+const wsUrl = "wss://ghostlobby.onrender.com";
 
     const state = {
       me: null,

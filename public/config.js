@@ -1,1 +1,1 @@
-window.CHAT_SERVER_URL = null;
+window.CHAT_SERVER_URL = "wss://ghostlobby.onrender.com";
