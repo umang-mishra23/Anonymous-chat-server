@@ -10,7 +10,26 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const indexPath = path.join(process.cwd(), "public", "index.html");
+
+const publicDirCandidates = [
+  path.join(process.cwd(), "public"),
+  path.join(process.cwd(), "..", "public"),
+  path.join(__dirname, "public"),
+  path.join(__dirname, "..", "public")
+];
+const publicDir = publicDirCandidates.find((dir) => {
+  try {
+    return fs.existsSync(dir) && fs.statSync(dir).isDirectory();
+  } catch {
+    return false;
+  }
+});
+
+if (!publicDir) {
+  throw new Error(`Public directory not found. Checked: ${publicDirCandidates.join(", ")}`);
+}
+
+const indexPath = path.join(publicDir, "index.html");
 const indexHtml = fs.readFileSync(indexPath, "utf8");
 
 const injectApiKey = (html) => {
@@ -23,7 +42,7 @@ app.get(["/", "/index.html"], (req, res) => {
   res.type("html").send(injectApiKey(indexHtml));
 });
 
-app.use(express.static("public"));
+app.use(express.static(publicDir));
 
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
